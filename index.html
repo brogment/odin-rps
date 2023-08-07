@@ -6,24 +6,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="header">ROCK PAPER SCISSORS ONLINE</div>
+    <div class="selection">
+        <button class="button" id="rock">Rock</button>
+        <button class="button" id="paper">Paper</button>
+        <button class="button" id="scissors">Scissors</button>
+    </div>
+    <div class="info">
+        <div id="playerWinCount"></div>
+        <div id="computerWinCount"></div>
+        <div id="roundNumber"></div>
+        <div id="result"></div>
+        <div id="gameOutcome"></div>
+    </div>
     <script>
 
-      // user inputs choice, stored in var
-      // computer choice is randomly generated, and stored in var
-      // choices are compared against each other in function
-      //each time function is called, round counter increases by one
-      //if player won individual round, increase playerWinCount by one 
-      //if computer won individual round, increase computerWinCount by one
-      // as long as round count <= 5, continue calling function
-      // when function exits compare player and computer WinCounts, and output message based on that
-      
-
-
+  
         let playerWinCount = 0;
         let computerWinCount = 0;
-        let roundCount = 0;
+        let roundCount = 1;
 
         function getComputerChoice(){
             let num = Math.floor(Math.random() * (4 - 1) + 1);
@@ -36,72 +40,79 @@
             }
         }   
 
-        function round() {
+        function round(playerChoice) {
             
-            playerChoice = prompt("Choose rock, paper, or scissors").toLowerCase();
             computerChoice = getComputerChoice().toLowerCase();
+            let result = '';
             
             if (playerChoice === computerChoice) {
-                console.log("Tie")
-                return;
+                result = "Tie";
             } else if (playerChoice === "rock" && computerChoice === "scissors") {
-                console.log("You win, rock beats scissors");
-                return playerWinCount++;
+                result = "You win, rock beats scissors";
+                playerWinCount++;
             } else if (playerChoice === "scissors" && computerChoice === "paper") {
-                console.log("You win, scissors beats paper")
-                return playerWinCount++;
+                result = "You win, scissors beats paper";
+                playerWinCount++;
             } else if  (playerChoice === "paper" && computerChoice === "rock") {
-                console.log("You win, paper beats rock")
-                return playerWinCount++; 
+                result = "You win, paper beats rock";
+                playerWinCount++; 
 
             } else if (playerChoice === "rock" && computerChoice === "paper") {
-                console.log("You lose, paper beats rock");
-                return computerWinCount++; 
+                result = "You lose, paper beats rock";
+                computerWinCount++; 
             } else if (playerChoice === "scissors" && computerChoice === "rock") {
-                console.log("You lose, rock beats scissors");
-                return computerWinCount++; 
+                result = "You lose, rock beats scissors";
+                computerWinCount++; 
             } else if (playerChoice === "paper" && computerChoice === "scissors") {
-                console.log( "You lose, scissors beats paper")
-                return computerWinCount++; 
+                result =  "You lose, scissors beats paper";
+                computerWinCount++; 
             }
-        }
 
-       
-     
+            
+            document.getElementById('result').textContent = result;
+            document.getElementById('playerWinCount').textContent = `Player rounds won: ${playerWinCount}`
+            document.getElementById('computerWinCount').textContent = `Computer rounds won: ${computerWinCount}`
+            document.getElementById('roundNumber').textContent = `Round: ${roundCount}`
 
-
-
-     function game() {
-        while(roundCount < 5) {
-            round();
             roundCount++
+
+
+            let gameOutcome ='';
+            document.getElementById('gameOutcome').textContent = gameOutcome;
+
+            if(roundCount===6){
+                if(playerWinCount > computerWinCount) {
+                    gameOutcome = "YOU WIN THE GAME";
+                } else if (computerWinCount > playerWinCount){
+                    gameOutcome = "YOU LOSE THE GAME";
+                } else {
+                    gameOutcome = "YOU TIED THE GAME";
+                }
+
+                document.getElementById('gameOutcome').textContent = `${gameOutcome} , make a selection to play again`;
+                roundCount=1;
+                computerWinCount=0;
+                playerWinCount=0;
+                
+            } 
+            
+            
+
         }
 
-        if(playerWinCount > computerWinCount) {
-            console.log("YOU WIN");
-        } else if (computerWinCount > playerWinCount){
-            console.log("YOU LOSE")
-        } else {
-            console.log("YOU TIE")
-        }
+
     
-     }
+    
+    
 
-
-     game();
-
-
-
-
-
-
-
-
-
-
-
-
-
+    let rock = document.getElementById('rock');
+    let paper = document.getElementById('paper');      
+    let scissors = document.getElementById('scissors'); 
+    
+    rock.addEventListener('click', () => round('rock'));
+    paper.addEventListener('click', () => round('paper'));
+    scissors.addEventListener('click', () => round('scissors')); 
+    
     </script>
 </body>
 </html>
